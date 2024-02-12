@@ -14,13 +14,9 @@ export const apiRoute = async (fastify) => {
     const repo = (await createConnection()).getRepository(User);
 
     if (req.user != null) {
-      let _user = user;
-      
-      _user.image = req.user.image.replace(".jpg", ".webp");
-      res.send(_user);
+      res.send(req.user);
     } else {
       let user = await repo.save(new User());
-      user.image = user.image.replace(".jpg", ".webp");
       res.send(user);
     }
   });
