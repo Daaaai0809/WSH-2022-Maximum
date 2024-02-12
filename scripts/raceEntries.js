@@ -34,32 +34,31 @@ export async function insertRaceEntries() {
     const players = await playerRepo
       .createQueryBuilder()
       .orderBy("random()")
-      .limit(_.random(6, 12))
+      .limit(Math.random(6, 12))
       .getMany();
 
-    const predictionMarks = _.shuffle(
-      ["◎", "○", "△", "×", ..._.fill(Array(players.length), "")].slice(
-        0,
-        players.length,
-      ),
-    );
+    const predictionMarks = ["◎", "○", "△", "×", ...new Array(players.length).fill("")].slice(0, players.length);
+    for (let i = predictionMarks.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [predictionMarks[i], predictionMarks[j]] = [predictionMarks[j], predictionMarks[i]];
+    }
 
     const entries = players.map((player, idx) => {
       const { first, others, second, third } = {
-        first: _.random(0, 10),
-        others: _.random(0, 10),
-        second: _.random(0, 10),
-        third: _.random(0, 10),
+        first: Math.random(0, 10),
+        others: Math.random(0, 10),
+        second: Math.random(0, 10),
+        third: Math.random(0, 10),
       };
 
-      const rockWin = _.random(0, first);
-      const scissorsWin = _.random(0, first - rockWin);
+      const rockWin = Math.random(0, first);
+      const scissorsWin = Math.random(0, first - rockWin);
       const paperWin = first - (rockWin + scissorsWin);
 
       const totalRaces = first + second + third + others;
 
       return new RaceEntry({
-        comment: _.sample(COMMENTS),
+        comment: COMMENTS[Math.floor(Math.random() * COMMENTS.length)],
         first,
         firstRate: (totalRaces === 0 ? 0 : first / totalRaces) * 100,
         id: uuid(),
