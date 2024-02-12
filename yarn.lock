@@ -9520,7 +9520,7 @@ __metadata:
     webpack-bundle-analyzer: ^4.10.1
     webpack-cli: ^4.9.1
     webpack-node-externals: ^3.0.0
-    zengin-code: ^1.0.0-p20220130
+    zengin-code: ^1.0.0-p20240208
   languageName: unknown
   linkType: soft
 
@@ -9899,10 +9899,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zengin-code@npm:^1.0.0-p20220130":
-  version: 1.0.0-p20220130
-  resolution: "zengin-code@npm:1.0.0-p20220130"
-  checksum: 1c63790ccb925201555050603e348dc32e96dcf94f41298847fba27584a75227dfc2eb6be0f98beb0466f5d2ba8c0d41297d465a14c04671e05a60aa1564ba16
+"zengin-code@npm:^1.0.0-p20240208":
+  version: 1.0.0-p20240208
+  resolution: "zengin-code@npm:1.0.0-p20240208"
+  checksum: b948f9766a1cc53595a93f8ac1a783dca4de65d0662255b68a23e480f47c2a0eb0bade384af1a7d0fb3b41db055573615e0308a69c862fd24fe74cc9d5538de5
   languageName: node
   linkType: hard
 
