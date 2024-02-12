@@ -14,9 +14,13 @@ export const apiRoute = async (fastify) => {
     const repo = (await createConnection()).getRepository(User);
 
     if (req.user != null) {
-      res.send(req.user);
+      let _user = user;
+      
+      _user.image = req.user.image.replace(".jpg", ".webp");
+      res.send(_user);
     } else {
-      const user = await repo.save(new User());
+      let user = await repo.save(new User());
+      user.image = user.image.replace(".jpg", ".webp");
       res.send(user);
     }
   });
@@ -40,7 +44,7 @@ export const apiRoute = async (fastify) => {
   });
 
   fastify.get("/hero", async (_req, res) => {
-    const url = assets("/images/hero.jpg");
+    const url = assets("/images/hero.webp");
     const hash = Math.random().toFixed(10).substring(2);
 
     res.send({ hash, url });
@@ -83,7 +87,14 @@ export const apiRoute = async (fastify) => {
       where,
     });
 
-    res.send({ races });
+    let validRaces = races.map((race) => {
+      let _race = race;
+
+      _race.image = race.image.replace(".jpg", ".webp");
+      return _race;
+    });
+    
+    res.send({ races: validRaces });
   });
 
   fastify.get("/races/:raceId", async (req, res) => {
@@ -97,7 +108,20 @@ export const apiRoute = async (fastify) => {
       throw fastify.httpErrors.notFound();
     }
 
-    res.send(race);
+    // raceのimageにある.jpgを.webpに変換
+    let validRace = race;
+
+    validRace.image = race.image.replace(".jpg", ".webp");
+
+    validRace.entries = validRace.entries.map((entry) => {
+      let _entry = entry;
+
+      _entry.player.image = entry.player.image.replace(".jpg", ".webp");
+
+      return _entry;
+    });
+
+    res.send(validRace);
   });
 
   fastify.get("/races/:raceId/betting-tickets", async (req, res) => {

@@ -139,6 +139,7 @@ export const Top = () => {
             isSameDay(race.startAt, date),
           )
       : [];
+      
   const todayRacesToShow = useTodayRacesWithAnimation(todayRaces);
   const heroImageUrl = useHeroImage(todayRaces);
 
