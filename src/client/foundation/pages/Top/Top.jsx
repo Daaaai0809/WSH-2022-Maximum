@@ -1,5 +1,5 @@
 import moment from "moment-timezone";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -128,18 +128,19 @@ export const Top = () => {
     revalidate();
   }, [revalidate]);
 
-  const todayRaces =
-    raceData != null
-      ? [...raceData.races]
-          .sort(
-            (/** @type {Model.Race} */ a, /** @type {Model.Race} */ b) =>
-              moment(a.startAt) - moment(b.startAt),
-          )
-          .filter((/** @type {Model.Race} */ race) =>
-            isSameDay(race.startAt, date),
-          )
-      : [];
-      
+  const todayRaces = useMemo(() => 
+      raceData != null
+        ? [...raceData.races]
+            .sort(
+              (/** @type {Model.Race} */ a, /** @type {Model.Race} */ b) =>
+                moment(a.startAt) - moment(b.startAt),
+            )
+            .filter((/** @type {Model.Race} */ race) =>
+              isSameDay(race.startAt, date),
+            )
+        : []
+    ,[raceData, date]);
+
   const todayRacesToShow = useTodayRacesWithAnimation(todayRaces);
   const heroImageUrl = useHeroImage(todayRaces);
 
