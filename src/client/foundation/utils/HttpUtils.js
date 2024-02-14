@@ -1,7 +1,6 @@
 export const jsonFetcher = async (/** @type {string} */ url) => {
   const res = await fetch(url, { 
     responseType: "json",
-    cache: "reload"
   });
 
   const json = await res.json();
@@ -17,7 +16,6 @@ export const authorizedJsonFetcher = async (url, userId) => {
   const res = await fetch(url, {
     headers: { "x-app-userid": userId },
     responseType: "json",
-    cache: "reload"
   });
 
   const json = await res.json();

@@ -82,15 +82,8 @@ export const apiRoute = async (fastify) => {
     const races = await repo.find({
       where,
     });
-
-    let validRaces = races.map((race) => {
-      let _race = race;
-
-      _race.image = race.image.replace(".jpg", ".webp");
-      return _race;
-    });
     
-    res.send({ races: validRaces });
+    res.send({ races});
   });
 
   fastify.get("/races/:raceId", async (req, res) => {
@@ -104,20 +97,7 @@ export const apiRoute = async (fastify) => {
       throw fastify.httpErrors.notFound();
     }
 
-    // raceのimageにある.jpgを.webpに変換
-    let validRace = race;
-
-    validRace.image = race.image.replace(".jpg", ".webp");
-
-    validRace.entries = validRace.entries.map((entry) => {
-      let _entry = entry;
-
-      _entry.player.image = entry.player.image.replace(".jpg", ".webp");
-
-      return _entry;
-    });
-
-    res.send(validRace);
+    res.send(race);
   });
 
   fastify.get("/races/:raceId/betting-tickets", async (req, res) => {
