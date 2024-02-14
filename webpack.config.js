@@ -66,7 +66,6 @@ module.exports = [
     target: "web",
   },
   {
-    devtool: "source-map",
     entry: path.join(SRC_ROOT, "server/index.js"),
     externals: [nodeExternals()],
     mode: "development",
@@ -99,7 +98,11 @@ module.exports = [
       path: DIST_ROOT,
     },
     resolve: {
-      extensions: [".mjs", ".js", ".jsx"]
+      extensions: [".mjs", ".js", ".jsx"],
+      alias: {
+        react: "preact/compat",
+        "react-dom": "preact/compat",
+      }
     },
     target: "node",
   },
