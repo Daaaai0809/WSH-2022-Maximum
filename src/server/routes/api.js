@@ -179,11 +179,6 @@ export const apiRoute = async (fastify) => {
   fastify.post("/initialize", async (_req, res) => {
     await initialize();
 
-    const connection = await createConnection();
-
-    await connection.query("CREATE INDEX idx_races_id ON races (id)");
-    await connection.query("CREATE INDEX idx_start_at ON races (start_at)");
-
     res.status(204).send();
   });
 };
