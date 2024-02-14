@@ -14,7 +14,6 @@ import { jsonFetcher } from "../../../utils/HttpUtils";
 
 import { EntryTable } from "./internal/EntryTable";
 import { PlayerPictureList } from "./internal/PlayerPictureList";
-import { TrimmedImage } from "../../../components/media/TrimmedImage";
 
 const LiveBadge = styled.span`
   background: ${Color.red};
@@ -47,7 +46,9 @@ export const RaceCard = () => {
       <Section dark shrink>
         <LiveBadge>Live</LiveBadge>
         <Spacer mt={Space * 2} />
-        <TrimmedImage src={data.image} width={400} height={225} />
+        <img src={data.image} style={{
+          objectFit: "cover",
+        }} width={400} height={225} />
       </Section>
 
       <Spacer mt={Space * 2} />

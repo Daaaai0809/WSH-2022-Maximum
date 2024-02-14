@@ -7,7 +7,6 @@ import { Stack } from "../../../../components/layouts/Stack";
 import { easeOutCubic, useAnimation } from "../../../../hooks/useAnimation";
 import { Color, FontSize, Radius, Space } from "../../../../styles/variables";
 import { formatCloseAt } from "../../../../utils/DateUtils";
-import { TrimmedImage } from "../../../../components/media/TrimmedImage";
 
 export const RecentRaceList = React.memo(({ children }) => {
   return (
@@ -93,7 +92,11 @@ const Item = React.memo(({ race }) => {
 
         <Stack.Item grow={0} shrink={0}>
           <Stack horizontal alignItems="center" gap={Space * 2}>
-            <TrimmedImage height={100} src={race.image} width={100} />
+            <img src={race.image} style={{
+              height: 100,
+              width: 100,
+              objectFit: "cover",
+            }}/>
             <RaceButton to={`/races/${race.id}/race-card`}>投票</RaceButton>
           </Stack>
         </Stack.Item>

@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 import { Stack } from "../../../../../components/layouts/Stack";
 import { Color, FontSize, Space } from "../../../../../styles/variables";
-import { TrimmedImage } from "../../../../../components/media/TrimmedImage";
 
 const PlayerNumber = styled.span`
   border: 1px solid ${Color.mono[900]};
@@ -28,11 +27,14 @@ const PlayerName = styled.span`
 const Item = ({ image, name, number }) => {
   return (
     <Stack gap={Space * 1}>
-      <TrimmedImage
+      <img
         alt={`${name}選手のプロフィール写真`}
         height={100}
         src={image}
         width={100}
+        style={{
+          objectFit: "cover",
+        }}
       />
 
       <Stack horizontal alignItems="center" gap={Space / 2} wrap="wrap">

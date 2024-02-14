@@ -16,7 +16,6 @@ import { OddsRankingList } from "./internal/OddsRankingList";
 import { OddsTable } from "./internal/OddsTable";
 import { TicketVendingModal } from "./internal/TicketVendingModal";
 import dayjs from "dayjs";
-import { TrimmedImage } from "../../../components/media/TrimmedImage";
 
 const LiveBadge = styled.span`
   background: ${Color.red};
@@ -76,7 +75,9 @@ export const Odds = () => {
       <Section dark shrink>
         <LiveBadge>Live</LiveBadge>
         <Spacer mt={Space * 2} />
-        <TrimmedImage src={data.image} width={400} height={225} />
+        <img src={data.image} style={{
+          objectFit: "cover",
+        }} width={400} height={225} />
       </Section>
 
       <Spacer mt={Space * 2} />
