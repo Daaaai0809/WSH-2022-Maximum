@@ -1,10 +1,14 @@
-import moment from "moment-timezone";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import { Between, LessThanOrEqual, MoreThanOrEqual } from "typeorm";
 
-import { assets } from "../../client/foundation/utils/UrlUtils.js";
 import { BettingTicket, Race, User } from "../../model/index.js";
 import { createConnection } from "../typeorm/connection.js";
 import { initialize } from "../typeorm/initialize.js";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 /**
  * @type {import('fastify').FastifyPluginCallback}
@@ -39,18 +43,11 @@ export const apiRoute = async (fastify) => {
     res.status(204).send();
   });
 
-  fastify.get("/hero", async (_req, res) => {
-    const url = assets("/images/hero.webp");
-    const hash = Math.random().toFixed(10).substring(2);
-
-    res.send({ hash, url });
-  });
-
   fastify.get("/races", async (req, res) => {
     const since =
-      req.query.since != null ? moment.unix(req.query.since) : undefined;
+      req.query.since != null ? dayjs(req.query.since).unix() : undefined;
     const until =
-      req.query.until != null ? moment.unix(req.query.until) : undefined;
+      req.query.until != null ? dayjs(req.query.until).unix() : undefined;
 
     if (since != null && !since.isValid()) {
       throw fastify.httpErrors.badRequest();
@@ -82,8 +79,14 @@ export const apiRoute = async (fastify) => {
     const races = await repo.find({
       where,
     });
+
+    let validRaces = races.map((race) => {
+      let _race = race;
+      _race.image = race.image.replace(".jpg", ".webp");
+      return _race;
+    });
     
-    res.send({ races});
+    res.send({ races: validRaces });
   });
 
   fastify.get("/races/:raceId", async (req, res) => {
@@ -97,7 +100,15 @@ export const apiRoute = async (fastify) => {
       throw fastify.httpErrors.notFound();
     }
 
-    res.send(race);
+    let validRace = race;
+
+    validRace.image = race.image.replace(".jpg", ".webp");
+
+    validRace.entries.forEach((entry) => {
+      entry.player.image = entry.player.image.replace(".jpg", ".webp");
+    });
+
+    res.send(validRace);
   });
 
   fastify.get("/races/:raceId/betting-tickets", async (req, res) => {

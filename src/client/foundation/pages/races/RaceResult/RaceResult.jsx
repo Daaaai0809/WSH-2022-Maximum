@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { Container } from "../../../components/layouts/Container";
 import { Section } from "../../../components/layouts/Section";
 import { Spacer } from "../../../components/layouts/Spacer";
-import { TrimmedImage } from "../../../components/media/TrimmedImage";
 import { TabNav } from "../../../components/navs/TabNav";
 import { Heading } from "../../../components/typographies/Heading";
 import { useAuthorizedFetch } from "../../../hooks/useAuthorizedFetch";
@@ -16,6 +15,7 @@ import { authorizedJsonFetcher, jsonFetcher } from "../../../utils/HttpUtils";
 
 import { BettingTicketList } from "./internal/BettingTicketList";
 import { RaceResultSection } from "./internal/RaceResultSection";
+import { TrimmedImage } from "../../../components/media/TrimmedImage";
 
 const LiveBadge = styled.span`
   background: ${Color.red};
@@ -52,7 +52,7 @@ export const RaceResult = () => {
       <Section dark shrink>
         <LiveBadge>Live</LiveBadge>
         <Spacer mt={Space * 2} />
-        <TrimmedImage height={225} src={data.image.replace(".jpg", ".webp")} width={400} />
+        <TrimmedImage src={data.image} width={400} height={225} />
       </Section>
 
       <Spacer mt={Space * 2} />

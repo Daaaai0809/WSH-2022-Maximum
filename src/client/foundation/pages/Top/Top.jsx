@@ -1,4 +1,6 @@
-import moment from "moment-timezone";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import React, { useCallback, useEffect, useMemo, useRef, useState, lazy, Suspense } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -10,11 +12,19 @@ import { Heading } from "../../components/typographies/Heading";
 import { useAuthorizedFetch } from "../../hooks/useAuthorizedFetch";
 import { useFetch } from "../../hooks/useFetch";
 import { Color, Radius, Space } from "../../styles/variables";
-import { isSameDay } from "../../utils/DateUtils";
 import { authorizedJsonFetcher, jsonFetcher } from "../../utils/HttpUtils";
 
-import { HeroImage } from "./internal/HeroImage";
 import { RecentRaceList } from "./internal/RecentRaceList";
+
+const Image = styled.img`
+  display: block;
+  margin: 0 auto;
+`;
+
+const ChargeDialog = lazy(() => import('./internal/ChargeDialog'));
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 /**
  * @param {Model.Race[]} races
@@ -71,29 +81,9 @@ function useTodayRacesWithAnimation(races) {
   return racesToShow;
 }
 
-/**
- * @param {Model.Race[]} todayRaces
- * @returns {string | null}
- */
-function useHeroImage(todayRaces) {
-  const firstRaceId = todayRaces[0]?.id;
-  const url =
-    firstRaceId !== undefined
-      ? `/api/hero?firstRaceId=${firstRaceId}`
-      : "/api/hero";
-  const { data } = useFetch(url, jsonFetcher);
-
-  if (firstRaceId === undefined || data === null) {
-    return null;
-  }
-
-  const imageUrl = `${data.url}?${data.hash}`;
-  return imageUrl;
-}
-
 /** @type {React.VFC} */
 export const Top = () => {
-  const { date = moment().format("YYYY-MM-DD") } = useParams();
+  const { date = dayjs().format("YYYY-MM-DD") } = useParams();
 
   const ChargeButton = styled.button`
     background: ${Color.mono[700]};
@@ -132,22 +122,19 @@ export const Top = () => {
         ? [...raceData.races]
             .sort(
               (/** @type {Model.Race} */ a, /** @type {Model.Race} */ b) =>
-                moment(a.startAt) - moment(b.startAt),
+              dayjs(a.startAt).unix() - dayjs(b.startAt).unix(),
             )
             .filter((/** @type {Model.Race} */ race) =>
-              isSameDay(race.startAt, date),
+              dayjs(race.startAt).isSame(dayjs(date), 'day'),
             )
         : []
     ,[raceData, date]);
 
   const todayRacesToShow = useTodayRacesWithAnimation(todayRaces);
-  const heroImageUrl = useHeroImage(todayRaces);
-
-  const ChargeDialog = lazy(() => import("./internal/ChargeDialog"));
 
   return (
     <Container>
-      {heroImageUrl !== null && <HeroImage url={heroImageUrl} />}
+      <Image src="/assets/images/hero.webp" loading="eager" alt="hero" />
 
       <Spacer mt={Space * 2} />
       {userData && (
@@ -175,7 +162,7 @@ export const Top = () => {
         )}
       </section>
 
-      <Suspense fallback={null}>
+      <Suspense fallback="">
         <ChargeDialog ref={chargeDialogRef} onComplete={handleCompleteCharge} />
       </Suspense>
     </Container>

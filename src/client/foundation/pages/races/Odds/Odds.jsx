@@ -1,4 +1,3 @@
-import moment from "moment-timezone";
 import React, { useCallback, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -6,7 +5,6 @@ import styled from "styled-components";
 import { Container } from "../../../components/layouts/Container";
 import { Section } from "../../../components/layouts/Section";
 import { Spacer } from "../../../components/layouts/Spacer";
-import { TrimmedImage } from "../../../components/media/TrimmedImage";
 import { TabNav } from "../../../components/navs/TabNav";
 import { Heading } from "../../../components/typographies/Heading";
 import { useFetch } from "../../../hooks/useFetch";
@@ -17,6 +15,8 @@ import { jsonFetcher } from "../../../utils/HttpUtils";
 import { OddsRankingList } from "./internal/OddsRankingList";
 import { OddsTable } from "./internal/OddsTable";
 import { TicketVendingModal } from "./internal/TicketVendingModal";
+import dayjs from "dayjs";
+import { TrimmedImage } from "../../../components/media/TrimmedImage";
 
 const LiveBadge = styled.span`
   background: ${Color.red};
@@ -61,7 +61,7 @@ export const Odds = () => {
     return <Container>Loading...</Container>;
   }
 
-  const isRaceClosed = moment(data.closeAt).isBefore(new Date());
+  const isRaceClosed = dayjs(data.closeAt).isBefore(dayjs()); // Compare the race closing time with the current time
 
   return (
     <Container>
@@ -76,7 +76,7 @@ export const Odds = () => {
       <Section dark shrink>
         <LiveBadge>Live</LiveBadge>
         <Spacer mt={Space * 2} />
-        <TrimmedImage height={225} src={data.image.replace(".jpg", ".webp")} width={400} />
+        <TrimmedImage src={data.image} width={400} height={225} />
       </Section>
 
       <Spacer mt={Space * 2} />
