@@ -53,7 +53,7 @@ const Item = ({ "aria-current": ariaCurrent, children, to, ...rest }) => {
   );
 };
 
-export const TabNav = ({ children }) => {
+export const TabNav = React.memo(({ children }) => {
   return (
     <nav>
       <Stack horizontal as="ul" gap={Space * 2}>
@@ -61,5 +61,5 @@ export const TabNav = ({ children }) => {
       </Stack>
     </nav>
   );
-};
+});
 TabNav.Item = Item;
