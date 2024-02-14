@@ -61,6 +61,10 @@ module.exports = [
       // new BundleAnalyzerPlugin()
     ],
     resolve: {
+      alias: {
+        react: "preact/compat",
+        "react-dom": "preact/compat",
+      },
       extensions: [".js", ".jsx"],
     },
     target: "web",
@@ -98,11 +102,7 @@ module.exports = [
       path: DIST_ROOT,
     },
     resolve: {
-      extensions: [".mjs", ".js", ".jsx"],
-      alias: {
-        react: "preact/compat",
-        "react-dom": "preact/compat",
-      }
+      extensions: [".js", ".jsx"],
     },
     target: "node",
   },
