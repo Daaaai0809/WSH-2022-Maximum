@@ -132,6 +132,22 @@ export const Top = () => {
 
   const todayRacesToShow = useTodayRacesWithAnimation(todayRaces);
 
+  const [displayedItems, setDisplayedItems] = useState(10);
+
+  const handleScroll = useCallback(() => {
+    const { scrollTop, clientHeight, scrollHeight } = window.document.documentElement;
+    if (scrollTop + clientHeight === scrollHeight) {
+      setDisplayedItems(prevItems => prevItems + 10);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll]);
+
   return (
     <Container>
       <Image src="/assets/images/hero.webp" loading="eager" alt="hero" />
@@ -151,16 +167,24 @@ export const Top = () => {
       )}
 
       <Spacer mt={Space * 2} />
-      <section>
-        <Heading as="h1">本日のレース</Heading>
-        {todayRacesToShow.length > 0 && (
-          <RecentRaceList>
-            {todayRacesToShow.map((race) => (
-              <RecentRaceList.Item key={race.id} race={race} />
-            ))}
-          </RecentRaceList>
-        )}
-      </section>
+      <Suspense fallback="">
+        <section>
+          <Heading as="h1">本日のレース</Heading>
+          {todayRacesToShow.length > 0 && (
+            <RecentRaceList>
+              {/* {todayRacesToShow.map((race) => (
+                <RecentRaceList.Item key={race.id} race={race} />
+              ))} */}
+
+              {/* 最初10件までを表示して、スクロールしたら次の10件を表示する */}
+              {todayRacesToShow.slice(0, displayedItems).map((race) => (
+                <RecentRaceList.Item key={race.id} race={race} />
+              ))}
+
+            </RecentRaceList>
+          )}
+        </section>
+      </Suspense>
 
       <Suspense fallback="">
         <ChargeDialog ref={chargeDialogRef} onComplete={handleCompleteCharge} />
