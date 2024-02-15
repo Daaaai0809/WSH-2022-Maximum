@@ -82,7 +82,7 @@ export const apiRoute = async (fastify) => {
 
     let validRaces = races.map((race) => {
       let _race = race;
-      _race.image = race.image.replace(".jpg", ".webp");
+      _race.image = race.image.replace("/races/","/races_100/").replace(".jpg", ".webp");
       return _race;
     });
     
@@ -105,7 +105,7 @@ export const apiRoute = async (fastify) => {
     validRace.image = race.image.replace("/races/", "/races_225/").replace(".jpg", ".webp");
 
     validRace.entries.forEach((entry) => {
-      entry.player.image = entry.player.image.replace(".jpg", ".webp");
+      entry.player.image = entry.player.image.replace("/players/", "/players_100/").replace(".jpg", ".webp");
     });
 
     res.send(validRace);
