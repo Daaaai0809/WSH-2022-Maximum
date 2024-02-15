@@ -102,7 +102,7 @@ export const apiRoute = async (fastify) => {
 
     let validRace = race;
 
-    validRace.image = race.image.replace(".jpg", ".webp");
+    validRace.image = race.image.replace("/races/", "/races_225/").replace(".jpg", ".webp");
 
     validRace.entries.forEach((entry) => {
       entry.player.image = entry.player.image.replace(".jpg", ".webp");

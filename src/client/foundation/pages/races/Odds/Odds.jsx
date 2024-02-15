@@ -80,9 +80,7 @@ export const Odds = () => {
       <Section dark shrink>
         <LiveBadge>Live</LiveBadge>
         <Spacer mt={Space * 2} />
-        <img src={data.image} style={{
-          objectFit: "cover",
-        }} width={400} height={225} />
+        <img src={data.image} style={{ height: "auto", width: 400, objectFit: "cover" }}/>
       </Section>
 
       <Spacer mt={Space * 2} />
