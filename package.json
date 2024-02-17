@@ -75,7 +75,7 @@
     "pino-pretty": "^7.3.0",
     "preact": "latest",
     "react-helmet": "^6.1.0",
-    "react-router-dom": "6",
+    "react-router-dom": "^6.22.1",
     "regenerator-runtime": "^0.13.9",
     "sqlite3": "^5.1.2",
     "styled-components": "^5.3.3",

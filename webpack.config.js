@@ -14,7 +14,7 @@ const PUBLIC_ROOT = abs("./public");
 const DIST_ROOT = abs("./dist");
 const DIST_PUBLIC = abs("./dist/public");
 
-/** @type {Array<import('webpack').Configuration>} */
+/** @type {import('webpack').Configuration[]} */
 module.exports = [
   {
     devtool: "source-map",
@@ -39,7 +39,7 @@ module.exports = [
                 [
                   "@babel/preset-env",
                   {
-                    modules: "cjs",
+                    modules: false,
                     spec: true,
                   },
                 ],
@@ -85,7 +85,7 @@ module.exports = [
                 [
                   "@babel/preset-env",
                   {
-                    modules: "cjs",
+                    modules: false,
                     spec: true,
                   },
                 ],
